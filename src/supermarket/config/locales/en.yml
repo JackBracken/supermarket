@@ -82,10 +82,6 @@ en:
       warning: "The following invitations were invalid %{invites}. All others were valid and sent."
     resend: "Successfully resent invitation for %{email}."
     revoke: "Successfully revoked invitation for %{email}."
-    quality_metrics:
-      collaborator:
-        success: 'passed the Collaborator Metric with %{num_collaborators} collaborators.'
-        failure: 'Failure: Cookbook has %{num_collaborators} collaborators. A cookbook must have at least %{passing_number} collaborators to pass this metric.'
   tool:
     created: "The %{name} tool has been successfully created."
     updated: "The %{name} tool has been successfully updated."
