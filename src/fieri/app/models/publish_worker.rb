@@ -14,7 +14,7 @@ class PublishWorker
       fieri_key: ENV['FIERI_KEY'],
       cookbook_name: cookbook_name,
       publish_failure: failure,
-      publish_feedback: 'something'
+      publish_feedback: publish_feedback(cookbook_name)
     )
   end
 
@@ -26,5 +26,9 @@ class PublishWorker
 
   def get_supermarket_response(cookbook_name)
     Net::HTTP.get(supermarket_uri(cookbook_name))
+  end
+
+  def publish_feedback(cookbook_name)
+    "#{cookbook_name} not found in Supermarket"
   end
 end
