@@ -17,7 +17,6 @@ class CollaboratorWorker
 
   def get_collaborator_count(json)
     parsed = JSON.parse(json)
-puts parsed.class
     parsed['metrics']['collaborators']
   end
 

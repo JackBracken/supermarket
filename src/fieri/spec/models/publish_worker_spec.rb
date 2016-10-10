@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe CollaboratorWorker do
   let(:pw) { PublishWorker.new }
-  let(:cookbook_name) { 'greatcookbook' }
+  let(:cookbook_name) { 'apache2' }
   let(:cookbook_response) { File.read('spec/support/cookbook_metrics_fixture.json') }
   let(:uri) { "#{ENV['FIERI_SUPERMARKET_ENDPOINT']}/api/v1/cookbooks/#{cookbook_name}" }
 
@@ -25,10 +25,6 @@ describe CollaboratorWorker do
 
   context 'checking whether the cookbook exists on supermarket' do
     context 'when it exists' do
-      before do
-        allow(JSON).to receive(:parse).and_return(cookbook_response)
-      end
-
       it 'indicates that the publish metric passed' do
         pw.perform(cookbook_name)
 
@@ -55,6 +51,4 @@ describe CollaboratorWorker do
       end
     end
   end
-
-
 end

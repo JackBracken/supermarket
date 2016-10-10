@@ -8,13 +8,6 @@ class PublishWorker
     uri = URI.parse("#{ENV['FIERI_SUPERMARKET_ENDPOINT']}/api/v1/cookbooks/#{cookbook_name}")
     response = Net::HTTP.get(uri)
     parsed = JSON.parse(response)
-puts response.class
-puts "one"
-puts parsed.inspect
-puts parsed.class
-puts
-puts "two"
-puts parsed['name']
 
     if parsed['name'] == cookbook_name
       failure = false
