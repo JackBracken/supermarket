@@ -7,27 +7,22 @@ class PublishWorker
   def perform(cookbook_name)
     parsed = JSON.parse(get_supermarket_response(cookbook_name))
 
+    failure = false
     publish_feedback = ''
 
     unless cookbook_exists?(parsed, cookbook_name)
-      exists_failure = true
+      failure = true
       publish_feedback += "#{cookbook_name} not found in Supermarket"
     end
 
-    unless cookbook_not_deprecated?(parsed, cookbook_name)
-      deprecated_failure = true
+    unless cookbook_not_deprecated?(parsed)
+      failure = true
       publish_feedback += "#{cookbook_name} is deprecated"
     end
 
-    unless cookbook_not_for_adoption?(parsed, cookbook_name)
-      adoption_failure = true
-      publish_feedback += "#{cookbook_name} is up for adoption"
-    end
-
-    if exists_failure == true || deprecated_failure == true || adoption_failure == true
+    unless cookbook_not_for_adoption?(parsed)
       failure = true
-    else
-      failure = false
+      publish_feedback += "#{cookbook_name} is up for adoption"
     end
 
     Net::HTTP.post_form(
@@ -53,11 +48,11 @@ class PublishWorker
     cookbook_output['name'] == cookbook_name ? true : false
   end
 
-  def cookbook_not_deprecated?(cookbook_output, cookbook_name)
+  def cookbook_not_deprecated?(cookbook_output)
     cookbook_output['deprecated'] == true ? false : true
   end
 
-  def cookbook_not_for_adoption?(cookbook_output, cookbook_name)
+  def cookbook_not_for_adoption?(cookbook_output)
     cookbook_output['up_for_adoption'] == true ? false : true
   end
 end
