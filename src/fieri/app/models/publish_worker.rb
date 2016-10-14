@@ -7,7 +7,25 @@ class PublishWorker
   def perform(cookbook_name)
     parsed = JSON.parse(get_supermarket_response(cookbook_name))
 
-    parsed['name'] == cookbook_name ? failure = false : failure = true
+    if parsed['name'] == cookbook_name
+      exists_failure = false
+    else
+      exists_failure = true
+    end
+
+    if parsed['deprecated'] == true
+      deprecated_failure = true
+    else
+      deprecated_failure = false
+    end
+
+    if exists_failure == true || deprecated_failure == true
+      failure = true
+    else
+      failure = false
+    end
+
+#    parsed['deprecated'] == true ? failure = true : failure = false
 
     Net::HTTP.post_form(
       URI.parse("#{ENV['FIERI_SUPERMARKET_ENDPOINT']}/api/v1/cookbook-versions/publish_evaluation"),
