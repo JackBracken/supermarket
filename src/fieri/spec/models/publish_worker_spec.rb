@@ -30,7 +30,6 @@ describe CollaboratorWorker do
 
         assert_requested(:post, "#{ENV['FIERI_SUPERMARKET_ENDPOINT']}/api/v1/cookbook-versions/publish_evaluation", times: 1) do |req|
           expect(req.body).to include('publish_failure=false')
-          req.body =~ /publish_feedback=.+/
         end
       end
     end
